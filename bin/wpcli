@@ -1,0 +1,15 @@
+#!/bin/bash
+WP=$(bin/clinotty find /var/www/html/ -name wp-cli.phar);
+
+if [ -z "$WP" ]; then
+    echo "Install WP-CLI..."
+    bin/cli wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    bin/cli chmod +x wp-cli.phar
+    bin/cli cp wp-cli.phar /var/www/html/wp
+fi 
+
+if [ "$1" ]; then
+    bin/cli ./wp-cli.phar "$@"
+else
+    echo "Please specify a CLI command (ex. config)" && exit
+fi

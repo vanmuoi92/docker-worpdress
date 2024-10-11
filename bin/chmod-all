@@ -1,0 +1,38 @@
+
+
+#!/bin/bash
+chmod +x bin/bash 
+chmod +x bin/cf-purge 
+chmod +x bin/cli 
+chmod +x bin/clinotty 
+chmod +x bin/cliq 
+chmod +x bin/config 
+chmod +x bin/copyfromcontainer 
+chmod +x bin/copytocontainer 
+chmod +x bin/docker-ip 
+chmod +x bin/down 
+chmod +x bin/download 
+chmod +x bin/fixowns 
+chmod +x bin/init 
+chmod +x bin/initenv 
+chmod +x bin/mount-asset 
+chmod +x bin/mountuploads 
+chmod +x bin/mysql 
+chmod +x bin/mysqldump 
+chmod +x bin/remove 
+chmod +x bin/removeall 
+chmod +x bin/removevolumes 
+chmod +x bin/restart 
+chmod +x bin/root 
+chmod +x bin/rootnotty 
+chmod +x bin/setup 
+chmod +x bin/setupdb 
+chmod +x bin/setupdomain 
+chmod +x bin/setuploads 
+chmod +x bin/start 
+chmod +x bin/status 
+chmod +x bin/stop 
+chmod +x bin/stopall 
+chmod +x bin/wpcli 
+chmod +x bin/wpcliupgrade 
+chmod +x bin/xdebug

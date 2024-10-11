@@ -1,0 +1,27 @@
+#!/bin/bash
+
+[[ -f ./.env ]] && rm ./.env
+if [[ $OSTYPE == 'darwin'* ]]; then
+    cp ./.env-mac ./.env
+    cp ./docker-compose.dev-mac.yml ./docker-compose.dev.yml
+    sed -i '' -e '/linuxonly/ s/^#*/#/' ./docker-compose.yml
+else
+    if [[ -f ~/.config/environment/.env ]]; then
+        ln -sf ~/.config/environment/.env ./.env
+    else 
+        cp ./.env-linux ./.env
+    fi
+    cp ./docker-compose.dev-linux.yml ./docker-compose.dev.yml
+fi
+
+if [[ -f ~/.config/environment/db.env ]]; then
+    [[ -f ./env/db.env ]] && rm ./env/db.env
+    ln -sf ~/.config/environment/db.env ./env/db.env
+fi
+
+if [[ -f ~/.config/code-server/launch.json ]]; then
+    mkdir -p ./.vscode && ln -sf ~/.config/code-server/launch.json ./.vscode/launch.json
+    mkdir -p ./src/.vscode && ln -sf ~/.config/code-server/src/launch.json ./src/.vscode/launch.json
+fi
+
+mkdir -p ./data/mysql

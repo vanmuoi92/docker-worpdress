@@ -1,0 +1,13 @@
+src/
+db/
+data/
+*.tz
+*.tar
+.idea
+.vscode
+*.sql
+.DS_Store
+.env
+# docker-compose.dev.yml
+rootCA.pem
+data

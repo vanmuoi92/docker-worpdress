@@ -1,0 +1,17 @@
+#!/bin/bash
+export $(cat .env | xargs)
+
+# [ -z "$1" ] && echo "Please specify a link to download" && exit
+
+# wget https://drive.google.com/file/d/19F0eQbFWuNbt2GAo-QxoDdRJkP32kZKu/
+# echo "$?";
+
+DIR="/backups/$COMPOSE_PROJECT_NAME/files/src/wp-content/uploads"
+
+cd $DIR
+unzip $DIR/uploads.zip
+if [ -d "$DIR/uploads" ]; then
+    mv $DIR/uploads/* $DIR/
+fi
+rm -rf $DIR/uploads
+rm uploads.zip

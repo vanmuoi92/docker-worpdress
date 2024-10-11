@@ -1,0 +1,17 @@
+#!/bin/bash
+
+bin/initenv
+
+docker-compose -f docker-compose.yml up -d
+[ $? != 0 ] && echo "Failed to start Docker services" && exit
+
+bin/restart
+
+echo "Copying files from host to container after clone..."
+bin/cptocontainer --all
+
+echo "Setup database..."
+bin/setupdb
+
+bin/fixowns
+bin/restart

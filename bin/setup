@@ -1,0 +1,21 @@
+#!/bin/bash
+bin/stop
+export $(cat .env | xargs)
+
+[[ ! -z "$1" ]] && DOMAIN=$1
+
+docker-compose -f docker-compose.yml up -d
+[ $? != 0 ] && echo "Failed to start Docker services" && exit
+rm -rf src && mkdir src
+
+echo "Setup database..."
+bin/setupdb
+bin/config
+
+echo "Copying files from container to host after install..."
+bin/copyfromcontainer --all
+
+bin/fixowns
+
+bin/restart
+echo -e "Add '127.0.0.1 ::1 $DOMAIN' to /etc/hosts to access your WordPress."

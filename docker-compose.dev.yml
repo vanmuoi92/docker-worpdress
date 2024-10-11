@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+    app:
+        volumes: &appvolumes
+            - ./src:/var/www/html:cached
+            # mount_asset
+
+    phpfpm:
+        volumes: *appvolumes
+
+    mailcatcher:
+        image: sj26/mailcatcher
+        ports:
+            - "${FORWARD_MAIL_PORT:-1080}:1080"
+        links:
+            - phpfpm
+
+    phpmyadmin:
+        image: phpmyadmin
+        ports:
+            - "${FORWARD_DBMA_PORT:-7070}:80"
+        env_file:
+            - env/db.env
+        environment:
+            PMA_HOST: db
+            PMA_ABSOLUTE_URI:  "https://${DOMAIN:-localhost}/.dbma"
+        links:
+            - db

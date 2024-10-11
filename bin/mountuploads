@@ -1,0 +1,7 @@
+#!/bin/bash
+
+bin/stopall
+rm -rf wp-content/uploads
+sed '/#\s-\s\/backups/  s//\-\ \/backups/' -i.origin ./docker-compose.dev.yml
+
+bin/restart

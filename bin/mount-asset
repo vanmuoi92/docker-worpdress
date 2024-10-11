@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -o errexit
+. .env
+
+[[ ! -z "$1" ]] && PATH_ASSET=$1
+
+bin/stop
+
+# update docker-compose.dev.yml
+printf -v spaces %12s
+
+PATH_ASSET="src/wp-content/uploads"
+PATH_MOUNTING="/backups/${PROJECT_NAME:-default}/files/$PATH_ASSET"
+VOLUME_MOUNTNG="$PATH_MOUNTING:$PATH_MOUNTING"
+ESCAPED_KEYWORD=$(printf '%s\n' "$VOLUME_MOUNTNG" | sed -e 's/[]\/$*.^[]/\\&/g');
+grep --quiet "$ESCAPED_KEYWORD" docker-compose.dev.yml || sed -i -e 's/#\smount_asset/'"- $ESCAPED_KEYWORD\n${spaces}# mount_asset"'/g' docker-compose.dev.yml
+
+# rsync
+rsync -azvh "$PATH_ASSET/" $PATH_MOUNTING
+
+# rm
+rm -rf $PATH_ASSET
+
+# symplink
+ln -sf $PATH_MOUNTING $PATH_ASSET
+
+bin/start

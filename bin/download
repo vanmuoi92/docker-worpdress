@@ -1,0 +1,18 @@
+#!/bin/bash
+
+VERSION=${1:-latest}
+
+bin/initenv
+
+docker-compose -f docker-compose.yml up -d
+[ $? != 0 ] && echo "Failed to start Docker services" && exit
+
+S=$(bin/clinotty find . -maxdepth 1 -name index.php);
+
+if [ -n "$S" ]; then
+    echo "WordPress core was exist" && exit
+else
+    bin/wpcli core download --version=${VERSION}
+fi
+
+bin/fixowns

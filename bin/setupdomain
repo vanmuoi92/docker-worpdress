@@ -1,0 +1,16 @@
+#!/bin/bash
+set -o errexit
+export $(cat .env | xargs)
+[ -z "$1" ] && echo "Please specify old project site url (ex. https://domain.com)" && exit
+
+OLD_DOMAIN=$1
+
+[[ ! -z "$2" ]] && DOMAIN=$2
+
+echo "Update row database..."
+# bin/clinotty wp option update siteurl "https://$DOMAIN"
+# bin/clinotty wp option update home "https://$DOMAIN" 
+
+bin/wpcli search-replace $OLD_DOMAIN "https://$DOMAIN"
+
+echo -e "Add '127.0.0.1 ::1 $DOMAIN' to /etc/hosts to access your WordPress."

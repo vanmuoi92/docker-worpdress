@@ -1,0 +1,12 @@
+#!/bin/bash
+[ -z "$1" ] && echo "Please specify a CLI command (ex. ls)" && exit
+
+if [ "$1" == "wp" ]; then
+   command="${@:2}"
+    echo "Please use 'bin/wpcli $command' instead!"
+else
+    docker-compose exec phpfpm "$@"
+fi
+
+
+

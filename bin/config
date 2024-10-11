@@ -1,0 +1,22 @@
+#!/bin/bash
+if [[ -f ~/.config/environment/db.env ]]; then
+    [[ -f ./env/db.env ]] && rm ./env/db.env
+    ln -sf ~/.config/environment/db.env ./env/db.env
+fi
+
+source env/db.env
+
+CF=$(bin/clinotty find . -maxdepth 1 -name wp-config.php);
+
+if [[ -n "$CF" ]]; then
+    echo "'wp-config.php' file already exists.";
+    echo "Set the value of a constant defined in 'wp-config.php' file...";
+    bin/wpcli config set DB_NAME ${MYSQL_DATABASE} --quiet
+    bin/wpcli config set DB_HOST ${MYSQL_HOST} --quiet
+    bin/wpcli config set DB_USER ${MYSQL_USER} --quiet
+    bin/wpcli config set DB_PASSWORD ${MYSQL_PASSWORD} --quiet
+    echo "Success: Updated the constant in the 'wp-config.php' file.";
+else
+    echo "Generates a 'wp-config.php' file...";
+    bin/wpcli config create --dbname="${MYSQL_DATABASE}" --dbuser="${MYSQL_USER}" --dbpass="${MYSQL_PASSWORD}" --dbhost="${MYSQL_HOST}" --locale=en_DBboi
+fi
